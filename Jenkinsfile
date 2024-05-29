@@ -26,13 +26,15 @@ pipeline {
             }
         }
         stage('Deploy') {
-            steps {
-                script {
-                    withDockerRegistry([credentialsId: "${DOCKER_CREDENTIALS_ID}", url: 'https://index.docker.io/v1/']) {
-                        docker.image("${DOCKER_IMAGE}").push('latest')
-                    }
-                }
+    steps {
+        script {
+            docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials') { 
+                // ... (Tagging remains the same)
+                sh "docker push dfk007i/my-node-app:latest"  // Replace with your actual username
             }
         }
+    }
+}
+
     }
 }
